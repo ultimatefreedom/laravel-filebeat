@@ -1,10 +1,9 @@
 <?php
 
-namespace Shallowman\Log\HandleApplicationLog;
+namespace Shallowman\Log;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Shallowman\Log\LogService;
 
 class HandleApplicationLog
 {

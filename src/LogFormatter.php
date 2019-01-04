@@ -2,8 +2,6 @@
 
 namespace Shallowman\Log;
 
-use Shallowman\Log\JsonFormatter;
-
 class LogFormatter
 {
     /**
