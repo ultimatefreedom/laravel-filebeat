@@ -20,18 +20,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Shallowman\\Logging\\": "src/"
+            "Shallowman\\Log\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Shallowman\\Logging\\Tests\\": "tests/"
+            "Shallowman\\Log\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Shallowman\\Logging\\ServiceProvider"
+                "Shallowman\\Log\\ServiceProvider"
             ]
         }
     },
