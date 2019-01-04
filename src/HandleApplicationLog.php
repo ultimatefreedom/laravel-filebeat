@@ -47,6 +47,6 @@ class HandleApplicationLog
             ]
         ];
 
-        $this->service->channel('filebeat')->log($level, '', $content);
+        $this->service->channel('filebeat')->log($level ?? 'info', '', $content);
     }
 }
