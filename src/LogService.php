@@ -1,15 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: feron
- * Date: 2019/1/3
- * Time: 2:13 PM
- */
 
-namespace Shallowman\Log\LogService;
+namespace Shallowman\Log;
 
+use Illuminate\Log\LogManager;
+use Illuminate\Foundation\Application;
 
-class LogService
+class LogService extends LogManager
 {
+    public function __construct(Application $app)
+    {
+        parent::__construct($app);
+    }
 
+    protected function configurationFor($name)
+    {
+        return $this->app['config']["app-log.channels.{$name}"];
+    }
 }

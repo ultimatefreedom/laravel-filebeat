@@ -1,15 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: feron
- * Date: 2019/1/3
- * Time: 5:22 PM
- */
 
 namespace Shallowman\Log;
 
+use Shallowman\Log\JsonFormatter;
 
-class JsonlLogFormatter
+class LogFormatter
 {
-
+    /**
+     * 自定义日志实例
+     *
+     * @param  \Illuminate\Log\Logger $logger
+     * @return void
+     */
+    public function __invoke($logger)
+    {
+        foreach ($logger->getHandlers() as $handler) {
+            $handler->setFormatter(new JsonFormatter());
+        }
+    }
 }
