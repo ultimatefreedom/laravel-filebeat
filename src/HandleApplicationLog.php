@@ -4,6 +4,7 @@ namespace Shallowman\Log;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HandleApplicationLog
 {
@@ -21,13 +22,15 @@ class HandleApplicationLog
 
     public function terminate(Request $request, Response $response)
     {
-        $level = $request->attributes->get('log_level');
+        $level = $request->attributes->get('log_level') ?? 'info';
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
         $response = $response->getOriginalContent();
+        [$sec, $microSec] = explode('.', LARAVEL_START);
+        $microSec = intdiv($microSec, 1000);
         $content = [
             'app' => config('app.name'),
-            'uri' => $request->getHost() . '/' . $request->getRequestUri(),
+            'uri' => $request->getHost() . $request->getRequestUri(),
             'method' => $request->method(),
             'ip' => $request->getClientIp(),
             'platform' => '',
@@ -35,8 +38,8 @@ class HandleApplicationLog
             'os' => '',
             'level' => $level,
             'tag' => '',
-            'start' => '',
-            'end' => '',
+            'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec),
+            'end' => Carbon::now()->format('Y-m-d H:i:s.u'),
             'parameters' => $request->all(),
             'details' => [
                 'message' => $message,

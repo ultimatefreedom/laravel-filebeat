@@ -138,8 +138,6 @@ class Log
     protected static function writeLog($level, $message, $context)
     {
         $request = request();
-        $request->attributes->set('log_level', $level);
-        $request->attributes->set('message', $message);
-        $request->attributes->set('context', $context);
+        $request->attributes->add(['log_level' => $level, 'message' => $message, 'context' => $context]);
     }
 }

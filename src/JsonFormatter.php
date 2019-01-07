@@ -13,7 +13,7 @@ class JsonFormatter extends BaseFormatter
         unset($content['time']);
         unset($content['message']);
 
-        if (empty($record['context'])) {
+        if (empty($content['context'])) {
             return '';
         }
 
