@@ -14,7 +14,7 @@ The defaults are set in `config/app-log.php`. Copy this file to your own config 
 $ php artisan vendor:publish --provider="Shallowman\Log\ServiceProvider"
 ```
 
-> **Note:** If you want to rewrite the log storage path please use real path.
+> **Note:** If you want to rewrite the log path please provide a real path.
 
 ```php
 return [
@@ -23,7 +23,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/app.log'),
             'tap' => [Shallowman\Log\LogFormatter::class],
-            'days' => 1,
+            'days' => 7,
         ],
     ],
 ];

@@ -20,9 +20,14 @@ class HandleApplicationLog
         return $next($request);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * write application log when response to the request client
+     */
     public function terminate(Request $request, Response $response)
     {
-        $level = $request->attributes->get('log_level') ?? 'info';
+        $level = $request->attributes->get('log_level') ?: 'info';
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
         $response = $response->getOriginalContent();
@@ -50,6 +55,6 @@ class HandleApplicationLog
             ]
         ];
 
-        $this->service->channel('filebeat')->log($level ?? 'info', '', $content);
+        $this->service->channel('filebeat')->log($level, '', $content);
     }
 }
