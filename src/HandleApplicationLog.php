@@ -38,7 +38,7 @@ class HandleApplicationLog
             'os' => '',
             'level' => $level,
             'tag' => '',
-            'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec),
+            'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec)->format('Y-m-d H:i:s.u'),
             'end' => Carbon::now()->format('Y-m-d H:i:s.u'),
             'parameters' => $request->all(),
             'details' => [
