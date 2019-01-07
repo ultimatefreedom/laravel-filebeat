@@ -28,3 +28,12 @@ return [
     ],
 ];
 ```
+
+Add the HandleApplicationLog middleware in the $middleware property of app/Http/Kernel.php class:
+
+```php
+protected $middleware = [
+    // ...
+    \Shallowman\Log\HandleApplicationLog::class,
+];
+```
