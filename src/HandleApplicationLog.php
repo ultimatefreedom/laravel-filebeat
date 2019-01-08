@@ -2,7 +2,6 @@
 
 namespace Shallowman\Log;
 
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -22,7 +21,7 @@ class HandleApplicationLog
 
     /**
      * @param Request $request
-     * @param Response $response
+     * @param $response
      * write application log when response to the request client
      */
     public function terminate($request, $response)
@@ -30,7 +29,7 @@ class HandleApplicationLog
         $level = $request->attributes->get('log_level') ?: 'info';
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
-        $response = $response->getOriginalContent();
+        $response = $response->getContent();
         [$sec, $microSec] = explode('.', LARAVEL_START);
         $microSec = intdiv($microSec, 1000);
         $content = [
