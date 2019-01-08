@@ -21,7 +21,7 @@ return [
     'channels' => [
         'filebeat' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/app.log'),
+            'path' => env('APP_LOG_PATH', '/application/logs/app.log'),
             'tap' => [Shallowman\Log\LogFormatter::class],
             'days' => 7,
         ],
