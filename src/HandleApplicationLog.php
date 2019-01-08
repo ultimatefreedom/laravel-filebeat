@@ -25,7 +25,7 @@ class HandleApplicationLog
      * @param Response $response
      * write application log when response to the request client
      */
-    public function terminate(Request $request, Response $response)
+    public function terminate($request, $response)
     {
         $level = $request->attributes->get('log_level') ?: 'info';
         $context = $request->attributes->get('context');
