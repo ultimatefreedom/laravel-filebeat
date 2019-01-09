@@ -31,7 +31,10 @@ class HandleApplicationLog
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
         $response = $response->getContent();
-        $response = $response ? @json_decode($response, true) : new stdClass();
+        $response = @json_decode($response, true);
+        if (!empty($response['data'])) {
+            $response['data'] = json_encode($response['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
         [$sec, $microSec] = explode('.', LARAVEL_START);
         $microSec = intdiv($microSec, 1000);
         $content = [
@@ -54,6 +57,6 @@ class HandleApplicationLog
             'response' => $response,
         ];
 
-        $this->service->channel('filebeat')->log($level, '', $content);
+        $this->service->channel('filebeat')->log($level, '', ['api' => $content]);
     }
 }
