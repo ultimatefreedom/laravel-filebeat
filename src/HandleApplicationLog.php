@@ -4,6 +4,7 @@ namespace Shallowman\Log;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use stdClass;
 
 class HandleApplicationLog
 {
@@ -49,9 +50,7 @@ class HandleApplicationLog
                 'message' => $message,
                 'detail' => $context,
             ],
-            'response' => [
-                'detail' => $response
-            ]
+            'response' => $response ?: new stdClass(),
         ];
 
         $this->service->channel('filebeat')->log($level, '', $content);
