@@ -17,6 +17,6 @@ class JsonFormatter extends BaseFormatter
             return '';
         }
 
-        return $this->toJson($this->normalize($content['context']), true) . ($this->appendNewline ? PHP_EOL : '');
+        return json_encode($content['context'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
     }
 }
