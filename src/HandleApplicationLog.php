@@ -31,8 +31,7 @@ class HandleApplicationLog
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
         $response = $response->getContent();
-        $response = $response ? @json_encode($response,
-            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : new stdClass();
+        $response = $response ? @json_decode($response, true) : new stdClass();
         [$sec, $microSec] = explode('.', LARAVEL_START);
         $microSec = intdiv($microSec, 1000);
         $content = [
