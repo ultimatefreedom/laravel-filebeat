@@ -40,7 +40,6 @@ class HandleApplicationLog
 
         [$sec, $microSec] = explode('.', LARAVEL_START);
         $microSec = intdiv($microSec, 1000);
-        $now = Carbon::now();
         $content = [
             'app' => config('app.name'),
             'uri' => $request->getHost() . $request->getRequestUri(),
@@ -52,7 +51,7 @@ class HandleApplicationLog
             'level' => $level,
             'tag' => '',
             'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec)->format('Y-m-d H:i:s.u'),
-            'end' => $now->format('Y-m-d H:i:s.u'),
+            'end' => Carbon::now()->format('Y-m-d H:i:s.u'),
             'parameters' => json_encode($request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'performance' => round(microtime(true) - LARAVEL_START, 3),
             'details' => [
@@ -62,7 +61,7 @@ class HandleApplicationLog
             'response' => $response,
         ];
 
-        $timestamp = substr($now->format('Y-m-d\TH:i:s.u'), 0, -3) . 'Z';
+        $timestamp = substr(Carbon::now('UTC')->format('Y-m-d\TH:i:s.u'), 0, -3) . 'Z';
         $this->service->channel('filebeat')->log($level, '', ['api' => $content, '@timestamp' => $timestamp]);
     }
 }
