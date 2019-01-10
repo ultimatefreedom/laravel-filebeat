@@ -49,7 +49,7 @@ class HandleApplicationLog
             'tag' => '',
             'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec)->format('Y-m-d H:i:s.u'),
             'end' => Carbon::now()->format('Y-m-d H:i:s.u'),
-            'parameters' => $request->all(),
+            'parameters' => json_encode($request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'details' => [
                 'message' => $message,
                 'detail' => $context,
