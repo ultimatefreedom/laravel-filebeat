@@ -21,6 +21,21 @@ class HandleApplicationLog
     }
 
     /**
+     * standardize response content data structure
+     * @param $response string response content
+     * @return mixed|stdClass
+     */
+    protected function standardResponse($response)
+    {
+        $response = $response ? @json_decode($response, true) : new stdClass();
+        if (array_key_exists('data', $response)) {
+            $response['data'] = json_encode($response['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
+
+        return $response;
+    }
+
+    /**
      * @param Request $request
      * @param $response
      * write application log when response to the request client
@@ -30,16 +45,9 @@ class HandleApplicationLog
         $level = $request->attributes->get('log_level') ?: 'info';
         $context = $request->attributes->get('context');
         $message = $request->attributes->get('message');
-        $response = $response->getContent();
-        if ($response) {
-            $response = @json_decode($response, true);
-            $response['data'] = json_encode($response['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        } else {
-            $response = new stdClass();
-        }
+        $response = $this->standardResponse($response->getContent());
+        $now = Carbon::now();
 
-        [$sec, $microSec] = explode('.', LARAVEL_START);
-        $microSec = intdiv($microSec, 1000);
         $content = [
             'app' => config('app.name'),
             'uri' => $request->getHost() . $request->getRequestUri(),
@@ -50,8 +58,8 @@ class HandleApplicationLog
             'os' => '',
             'level' => $level,
             'tag' => '',
-            'start' => Carbon::createFromTimestampMs($sec * 1000 + $microSec)->format('Y-m-d H:i:s.u'),
-            'end' => Carbon::now()->format('Y-m-d H:i:s.u'),
+            'start' => Carbon::createFromTimestampMs(round(LARAVEL_START, 3))->format('Y-m-d H:i:s.u'),
+            'end' => $now->format('Y-m-d H:i:s.u'),
             'parameters' => json_encode($request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'performance' => round(microtime(true) - LARAVEL_START, 3),
             'details' => [
@@ -61,7 +69,7 @@ class HandleApplicationLog
             'response' => $response,
         ];
 
-        $timestamp = substr(Carbon::now('UTC')->format('Y-m-d\TH:i:s.u'), 0, -3) . 'Z';
+        $timestamp = substr($now->setTimezone('UTC')->format('Y-m-d\TH:i:s.u'), 0, -3) . 'Z';
         $this->service->channel('filebeat')->log($level, '', ['api' => $content, '@timestamp' => $timestamp]);
     }
 }
