@@ -27,8 +27,13 @@ class HandleApplicationLog
      */
     protected function standardResponse($response)
     {
-        $response = $response ? @json_decode($response, true) : new stdClass();
-        if (array_key_exists('data', $response)) {
+        if (!$response) {
+            return new stdClass();
+        }
+
+        $response = @json_decode($response, true);
+
+        if (is_array($response) && array_key_exists('data', $response)) {
             $response['data'] = json_encode($response['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
