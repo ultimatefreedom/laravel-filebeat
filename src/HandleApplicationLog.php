@@ -63,7 +63,7 @@ class HandleApplicationLog
             'os' => '',
             'level' => $level,
             'tag' => '',
-            'start' => Carbon::createFromTimestampMs(round(LARAVEL_START, 3))->format('Y-m-d H:i:s.u'),
+            'start' => Carbon::createFromTimestampMs(round(LARAVEL_START * 1000))->format('Y-m-d H:i:s.u'),
             'end' => $now->format('Y-m-d H:i:s.u'),
             'parameters' => json_encode($request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'performance' => round(microtime(true) - LARAVEL_START, 3),
