@@ -65,7 +65,7 @@ class HandleApplicationLog
             'tag' => '',
             'start' => Carbon::createFromTimestampMs(round(LARAVEL_START * 1000))->format('Y-m-d H:i:s.u'),
             'end' => $now->format('Y-m-d H:i:s.u'),
-            'parameters' => json_encode($request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'parameters' => json_encode($request->input(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'performance' => round(microtime(true) - LARAVEL_START, 3),
             'details' => [
                 'message' => $message,
